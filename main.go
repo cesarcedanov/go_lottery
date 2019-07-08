@@ -4,14 +4,10 @@ import (
 	"fmt"
 )
 
-type LotteryOptions struct {
-	MinNumber            int
-	MaxNumber            int
-	NumberPerCombination int
-	CombinationsLength   int
-}
+var combinationArr []Combination
 
 func main() {
+
 
 	lottery, err := NewLottery(
 		LotteryOptions{
@@ -21,24 +17,28 @@ func main() {
 			CombinationsLength:   4,
 		},
 	)
+
 	if err != nil {
 		fmt.Println("Unable to create the Lottery")
 		return
 	}
-	combinationArr := make([]Combination, 0, lottery.LotteryOpts.CombinationsLength)
-	for i := 0; i < lottery.LotteryOpts.CombinationsLength; i++ {
-		lottery.Shuffle()
-		// lottery.ShowAllAvailableNumbers()
 
-		combination, err := NewCombination(lottery.AvailableNumbers, lottery.LotteryOpts.NumberPerCombination)
+
+	for i := 0; i < lottery.LotteryOpts.CombinationsLength; i++ {
+
+		combination, err := NewCombination(
+			lottery.AvailableNumbers,
+			lottery.LotteryOpts.NumberPerCombination)
+
 		if err != nil {
 			fmt.Printf("%s", err.Error())
 			return
 		}
-		// combination.Sort()
-		fmt.Println(combination.Numbers)
+		fmt.Println(combinationArr.Numbers)
+
 		combinationArr = append(combinationArr, combination)
 	}
+	fmt.Println(combinationArr)
 	for _, i := range combinationArr {
 		fmt.Println(i)
 	}
