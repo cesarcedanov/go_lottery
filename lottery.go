@@ -4,9 +4,15 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
-	"strings"
 	"time"
 )
+
+type LotteryOptions struct {
+	MinNumber            int
+	MaxNumber            int
+	NumberPerCombination int
+	CombinationsLength   int
+}
 
 // Lottery creates a new type of 'Lottery'
 // which take some number from a range of number
@@ -33,16 +39,15 @@ func NewLottery(opts LotteryOptions) (Lottery, error) {
 	}, nil
 }
 
-// ShowAllAvailableNumbers shows up all the Availablesadas Numbers in the lottery
-func (l Lottery) ShowAllAvailableNumbers() {
-	fmt.Println(strings.Join(l.AvailableNumbers, " "))
-}
 
 // Shuffle will shuffle the values in the array
-func (l Lottery) Shuffle() {
+func (l Lottery) Shuffle() Lottery{
 	rand.Seed(time.Now().UnixNano())
-	for i := len(l.AvailableNumbers) - 1; i > 0; i-- {
-		j := rand.Intn(i + 1)
-		l.AvailableNumbers[i], l.AvailableNumbers[j] = l.AvailableNumbers[j], l.AvailableNumbers[i]
-	}
+	rand.Shuffle(
+		len(l.AvailableNumbers),
+		func(i, j int) {
+			l.AvailableNumbers[i], l.AvailableNumbers[j] =
+			l.AvailableNumbers[j], l.AvailableNumbers[i]})
+
+	return l
 }
