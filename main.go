@@ -2,12 +2,10 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
-var combinationArr []Combination
-
 func main() {
-
 
 	lottery, err := NewLottery(
 		LotteryOptions{
@@ -23,7 +21,7 @@ func main() {
 		return
 	}
 
-
+	var combinationArr []*Combination
 	for i := 0; i < lottery.LotteryOpts.CombinationsLength; i++ {
 
 		combination, err := NewCombination(
@@ -34,21 +32,17 @@ func main() {
 			fmt.Printf("%s", err.Error())
 			return
 		}
-		fmt.Println(combinationArr.Numbers)
+		combination.Sort()
 
 		combinationArr = append(combinationArr, combination)
 	}
-	fmt.Println(combinationArr)
-	for _, i := range combinationArr {
-		fmt.Println(i)
-	}
 
-	// ticket, err := NewTicket(combinationArr)
-	// if err != nil {
-	// 	fmt.Printf("%s", err.Error())
-	// 	return
-	// }
-	// if err := ticket.WriteLines(ticket.CreatedTime.Format(time.RFC850)); err != nil {
-	// 	return
-	// }
+	ticket, err := NewTicket(combinationArr)
+	if err != nil {
+		fmt.Printf("%s", err.Error())
+		return
+	}
+	if err := ticket.WriteLines(ticket.CreatedTime.Format(time.RFC850)); err != nil {
+		return
+	}
 }

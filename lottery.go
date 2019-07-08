@@ -3,10 +3,9 @@ package main
 import (
 	"errors"
 	"fmt"
-	"math/rand"
-	"time"
 )
 
+// LotteryOptions will define some rules for the Lottery
 type LotteryOptions struct {
 	MinNumber            int
 	MaxNumber            int
@@ -22,32 +21,32 @@ type Lottery struct {
 }
 
 // NewLottery will create a new Lottery struct
-func NewLottery(opts LotteryOptions) (Lottery, error) {
+func NewLottery(opts LotteryOptions) (*Lottery, error) {
 	if opts.MaxNumber < 1 {
-		return Lottery{}, errors.New("Missing Max Number in the lottery options")
+		return nil, errors.New("Missing Max Number in the lottery options")
 	}
 	if opts.NumberPerCombination < 1 {
-		return Lottery{}, errors.New("Missing Number per combination in the lottery options")
+		return nil, errors.New("Missing Number per combination in the lottery options")
 	}
 	numbers := []string{}
 	for i := opts.MinNumber; i <= opts.MaxNumber; i++ {
 		numbers = append(numbers, fmt.Sprint(i))
 	}
-	return Lottery{
+	return &Lottery{
 		AvailableNumbers: numbers,
 		LotteryOpts:      opts,
 	}, nil
 }
 
-
 // Shuffle will shuffle the values in the array
-func (l Lottery) Shuffle() Lottery{
-	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(
-		len(l.AvailableNumbers),
-		func(i, j int) {
-			l.AvailableNumbers[i], l.AvailableNumbers[j] =
-			l.AvailableNumbers[j], l.AvailableNumbers[i]})
+// func (l *Lottery) Shuffle() Lottery {
+// 	rand.Seed(time.Now().UnixNano())
+// 	rand.Shuffle(
+// 		len(l.AvailableNumbers),
+// 		func(i, j int) {
+// 			l.AvailableNumbers[i], l.AvailableNumbers[j] =
+// 				l.AvailableNumbers[j], l.AvailableNumbers[i]
+// 		})
 
-	return l
-}
+// 	return l
+// }

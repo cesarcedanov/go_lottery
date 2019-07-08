@@ -2,9 +2,9 @@ package main
 
 import (
 	"errors"
+	"math/rand"
 	"sort"
 	"strings"
-	"math/rand"
 	"time"
 )
 
@@ -14,15 +14,14 @@ type Combination struct {
 }
 
 // NewCombination extract a combination of values from an Array of string
-func NewCombination(numbers []string, length int) (Combination, error) {
+func NewCombination(numbers []string, length int) (*Combination, error) {
 	if length < 1 {
-		return Combination{}, errors.New("Invalid combination length")
+		return nil, errors.New("Invalid combination length")
 	}
-
-	return Combination{Numbers: shuffle(numbers, length)}, nil
+	return &Combination{Numbers: shuffleAndExtract(numbers, length)}, nil
 }
 
-func shuffle(toShuffle []string, amount int) []string{
+func shuffleAndExtract(toShuffle []string, amount int) []string {
 
 	shuffled := make([]string, amount)
 	rand.Seed(time.Now().UnixNano())
@@ -35,11 +34,11 @@ func shuffle(toShuffle []string, amount int) []string{
 }
 
 // toString concat the all value from the string array into a single string
-func (c Combination) ToString() string {
+func (c *Combination) ToString() string {
 	return strings.Join(c.Numbers, ", ")
 }
 
 // sort will sort the value from the string array
-func (c Combination) Sort() {
+func (c *Combination) Sort() {
 	sort.Strings(c.Numbers)
 }
