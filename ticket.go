@@ -4,7 +4,10 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -47,4 +50,25 @@ func (t *Ticket) WriteLines(path string) error {
 		fmt.Fprintln(w, combination.ToString())
 	}
 	return w.Flush()
+}
+
+func (t *Ticket) SaveTicket(filename string) error {
+	combination := "1,4,12,18,26,37"
+	err := ioutil.WriteFile(filename, []byte(combination), 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+}
+
+func newTicketFromFile(filename string) *Combination {
+	bs, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Fatal(err)
+		os.Exit(1)
+	}
+	s := strings.Split(string(bs), ",")
+	return &Combination{
+		Numbers: s,
+	}
 }

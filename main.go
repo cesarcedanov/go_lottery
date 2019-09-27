@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"log"
 )
 
 func main() {
@@ -11,7 +11,7 @@ func main() {
 		LotteryOptions{
 			MinNumber:            1,
 			MaxNumber:            38,
-			NumberPerCombination: 6,
+			NumberPerCombination: 7,
 			CombinationsLength:   4,
 		},
 	)
@@ -20,6 +20,7 @@ func main() {
 		fmt.Println("Unable to create the Lottery")
 		return
 	}
+	lottery.Shuffle()
 
 	var combinationArr []*Combination
 	for i := 0; i < lottery.LotteryOpts.CombinationsLength; i++ {
@@ -42,7 +43,9 @@ func main() {
 		fmt.Printf("%s", err.Error())
 		return
 	}
-	if err := ticket.WriteLines(ticket.CreatedTime.Format(time.RFC850)); err != nil {
+
+	if err := ticket.WriteLines(ticket.CreatedTime.Format("Monday, 02-Jan-06 15.04.05")); err != nil {
+		log.Fatal(err)
 		return
 	}
 }
