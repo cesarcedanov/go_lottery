@@ -33,8 +33,10 @@ func NewLottery(opts LotteryOptions) (*Lottery, error) {
 
 	numbers := []string{}
 	for i := opts.MinNumber; i <= opts.MaxNumber; i++ {
-		numbers = append(numbers, fmt.Sprint(i))
+		numbers = append(numbers, fmt.Sprintf("%02d", i))
 	}
+
+	fmt.Println("Lottery Number:", numbers)
 	return &Lottery{
 		AvailableNumbers: numbers,
 		LotteryOpts:      opts,

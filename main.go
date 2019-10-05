@@ -3,10 +3,12 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 )
 
 func main() {
 
+	fmt.Println(os.Args)
 	lottery, err := NewLottery(
 		LotteryOptions{
 			MinNumber:            1,

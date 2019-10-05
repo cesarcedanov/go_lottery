@@ -28,6 +28,9 @@ func shuffleAndExtract(toShuffle []string, amount int) []string {
 	shuffled := make([]string, amount)
 	rand.Seed(time.Now().UnixNano())
 	for i := 0; i < amount; i++ {
+		// To avoid duplicated combination
+		// Set a sleep of 10 milisecond to not use the same time.Now().UnixNano()
+		time.Sleep(10 * time.Millisecond)
 		indexToExtract := rand.Intn(len(tempShuffle) - 1)
 		shuffled[i] = tempShuffle[indexToExtract]
 		tempShuffle = append(tempShuffle[:indexToExtract], tempShuffle[indexToExtract+1:]...)
