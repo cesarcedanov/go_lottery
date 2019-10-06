@@ -1,22 +1,23 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
-	"os"
 )
 
 func main() {
 
-	fmt.Println(os.Args)
-	lottery, err := NewLottery(
-		LotteryOptions{
-			MinNumber:            1,
-			MaxNumber:            38,
-			NumberPerCombination: 7,
-			CombinationsLength:   4,
-		},
-	)
+	// Create a empty LotteryOptions
+	var opts LotteryOptions
+	// Using Flags get the value from the Arguments
+	flag.IntVar(&opts.MinNumber, "min-number", 1, "Minimun Number of the Lottery")
+	flag.IntVar(&opts.MaxNumber, "max-number", 38, "Maximun Number of the Lottery")
+	flag.IntVar(&opts.NumberPerCombination, "number-per-combination", 6, "Number Per Combination")
+	flag.IntVar(&opts.CombinationsLength, "combinations-length", 4, "How many combination per Ticket")
+	flag.Parse()
+
+	lottery, err := NewLottery(opts)
 
 	if err != nil {
 		fmt.Println("Unable to create the Lottery")
